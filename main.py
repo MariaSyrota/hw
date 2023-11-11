@@ -75,7 +75,7 @@ def add_book(request: Request):
         'title': 'Add your book',
         'request': request,
     }
-    return templates.TemplateResponse('add_book.html', context=context)
+    return templates.TemplateResponse('add_books.html', context=context)
 
 
 @app.post('/add-book', tags=['web'])
