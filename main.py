@@ -26,6 +26,7 @@ class Book(NewBook):
 
 
 def _serialize_books(books: list[tuple]) -> list[Book]:
+    print(books, 2222222222)
     books_serialized = [
         Book(
             pk=book[0],
@@ -62,7 +63,7 @@ def all_books(request: Request, search_text: str = Form(None)):
         books = db.get_books(limit=15)
     books_serialized = _serialize_books(books)
     context = {
-        'title': f'Search result for text {search_text}' if search_text else 'Наші квіточкі',
+        'title': f'Результат поиска {search_text}' if search_text else 'Наші квіточкі',
         'request': request,
         'books': books_serialized,
     }
@@ -83,7 +84,7 @@ def add_book_final(
         request: Request,
         title: str = Form(),
         author: str = Form(),
-        description: str = Form(None),
+        description: str = Form(''),
         price: float = Form(),
         cover: str = Form(),
 ):
@@ -104,8 +105,8 @@ def add_book_final(
     }
     return templates.TemplateResponse('all_books.html', context=context)
 
-#  API
 
+#  API
 
 
 @app.post("/api/add_book", status_code=status.HTTP_201_CREATED, tags=['API'])
@@ -131,17 +132,6 @@ def get_books(limit: int = 10) -> list[Book]:
 def get_books_search(query_str: str) -> list[Book]:
     books = db.get_book_by_title_or_other_str(query_str=query_str)
     return _serialize_books(books)
-
-
-
-
-
-
-
-
-
-
-
 
 
 class RootUser(BaseModel):
