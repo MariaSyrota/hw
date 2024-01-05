@@ -1,4 +1,4 @@
-def gcd(a, b):
+def nsd(a, b):
     """
     Функція для знаходження найбільшого спільного дільника двох натуральних чисел.
 
@@ -13,9 +13,9 @@ def gcd(a, b):
         return [a, b]
     elif a >= 2 * b:
         a = a - 2 * b
-        return gcd(a, b)
+        return nsd(a, b)
     elif b >= 2 * a:
         b = b - 2 * a
-        return gcd(a, b)
+        return nsd(a, b)
     else:
         return [a, b]
