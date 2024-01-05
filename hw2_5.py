@@ -1,20 +1,21 @@
-# def nsd(x, y):
-#     if y == 0:
-#         return x
-#     else:
-#         return nsd(y, x % y)
+def gcd(a, b):
+    """
+    Функція для знаходження найбільшого спільного дільника двох натуральних чисел.
 
+    Параметри:
+    a (int): Перше число.
+    b (int): Друге число.
 
-
-def nsd(a, b):
+    Повертає:
+    list: Список, що містить найбільший спільний дільник та залишок.
+    """
     if a == 0 or b == 0:
         return [a, b]
-
-    if a >= 2 * b:
-        return nsd(a - 2 * b, b)
-
-    if b >= 2 * a:
-        return nsd(a, b - 2 * a)
-
-    return [a, b]
-print(nsd(5, 7))
+    elif a >= 2 * b:
+        a = a - 2 * b
+        return gcd(a, b)
+    elif b >= 2 * a:
+        b = b - 2 * a
+        return gcd(a, b)
+    else:
+        return [a, b]
