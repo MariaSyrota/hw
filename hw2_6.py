@@ -1,30 +1,38 @@
-def get_election_winner(file_path: str) -> str:
-    """
-    Знаходить переможця виборів на загальному рівні.
-
-    Параметри:
-    file_path (str): Шлях до файлу з результатами виборів.
-
-    Повертає:
-    str: Ім'я переможця виборів.
-    """
-    total_votes = {}
+def read_election_results(file_path: str) -> dict:
+    '''
+    Зчитує дані з файлу з результатами виборів
+    і повертає словник, де ключами є прізвища кандидатів,
+    а значеннями - кількість голосів за кожного кандидата.
+    '''
+    election_results = {}
 
     with open(file_path, 'r') as file:
         for line in file:
-            name, votes = line.strip().split()
-
-            if name in total_votes:
-                total_votes[name] += int(votes)
+            candidate, votes = line.strip().split()
+            if candidate in election_results:
+                election_results[candidate] += int(votes)
             else:
-                total_votes[name] = int(votes)
+                election_results[candidate] = int(votes)
 
-    winner = max(total_votes, key=total_votes.get)
+    return election_results
 
-    return winner
+def find_presidential_winner(election_results: dict) -> str:
+    '''
+    Визначає переможця виборів президента на основі
+    результатів голосування. Якщо є кілька переможців,
+    проводиться третій тур голосування.
+    '''
+    max_votes = max(election_results.values())
+    winners = [candidate for candidate, votes in election_results.items() if votes == max_votes]
+
+    if len(winners) == 1:
+        return winners[0]
+    else:
+        return "Потрібен третій тур голосування!"
 
 
-file_path = "input.txt"
+file_path = 'input.txt'
+election_results = read_election_results(file_path)
 
-president = get_election_winner(file_path)
-print("Переможець виборів на загальному рівні:", president)
+presidential_winner = find_presidential_winner(election_results)
+print("Переможець виборів президента:", presidential_winner)
