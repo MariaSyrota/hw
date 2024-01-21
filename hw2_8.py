@@ -1,115 +1,68 @@
-def read_text(file_path: str) -> str:
+import io
+
+
+def process_text(file_path: str) -> tuple[int, int, list[str], str]:
+    '''Обробка тексту з файлу та підрахунок статистики
+
+    Параметри:
+    file_path (str): Шлях до файлу для обробки
+
+    Повертає:
+    tuple[int, int, list[str], str]: Кількість голосних літер, кількість приголосних літер,
+                                     три найпопулярніші голосні літери, найпопулярніша приголосна літера
     '''
-    Зчитує текст з файлу і повертає його зміст.
-    '''
-    with open(file_path, 'r') as file:
+    with io.open(file_path, 'r', encoding='utf-8') as file:
         text = file.read()
 
-    return text
-
-
-def process_text(text: str) -> dict:
-    '''
-    Обробляє текст та знаходить кількість голосних та приголосних літер.
-    Повертає словник, де ключами є "голосні" та "приголосні" і їх значеннями -
-    кількість голосних та приголосних літер в тексті.
-    '''
-    vowels = ['a', 'e', 'i', 'o', 'u']  # список голосних літер
-    consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y',
-                  'z']  # список приголосних літер
-
-    text = text.lower()  # перетворюємо текст на нижній регістр
-    vowel_count = 0
-    consonant_count = 0
-
+    vowels = 0
+    consonants = 0
     for char in text:
+        char = char.lower()
         if char.isalpha():
-            if char in vowels:
-                vowel_count += 1
-            elif char in consonants:
-                consonant_count += 1
+            if char in ['a', 'e', 'i', 'o', 'u']:
+                vowels += 1
+            else:
+                consonants += 1
 
-    return {"голосні": vowel_count, "приголосні": consonant_count}
-
-
-# Зчитуємо текст з файлу
-file_path = 'input_8.txt'
-text = read_text(file_path)
-
-# Обробляємо текст та знаходимо кількість голосних та приголосних літер
-result = process_text(text)
-
-# Виводимо результат
-print("Кількість голосних літер:", result["голосні"])
-print("Кількість приголосних літер:", result["приголосні"])
-
-
-def find_most_common_vowels(text: str, n: int) -> list:
-    '''
-    Знаходить n найпопулярніших голосних літер в тексті.
-    Повертає список з цими літерами, в порядку спадання популярності.
-    '''
-    vowels = ['a', 'e', 'i', 'o', 'u']  # список голосних літер
-    vowel_counts = {vowel: 0 for vowel in vowels}
-
+    letter_counts = {}
     for char in text:
-        if char.isalpha() and char.lowerSorry, it seems that my response got cut off.Here's the complete code for finding the most common vowels and consonants:
+        char = char.lower()
+        if char.isalpha():
+            if char in letter_counts:
+                letter_counts[char] += 1
+            else:
+                letter_counts[char] = 1
+
+    sorted_counts = sorted(letter_counts.items(), key=lambda x: x[1], reverse=True)
+
+    popular_vowels = []
+    popular_consonants = []
+    if vowels > consonants:
+        for char, count in sorted_counts:
+            if char in ['a', 'e', 'i', 'o', 'u']:
+                popular_vowels.append(char)
+                if len(popular_vowels) == 3:
+                    break
+    else:
+        for char, count in sorted_counts:
+            if char not in ['a', 'e', 'i', 'o', 'u']:
+                popular_consonants.append(char)
+                break
+
+    with io.open('output.txt', 'w', encoding='utf-8') as file:
+        file.write(f"Кількість голосних літер: {vowels}\n")
+        file.write(f"Кількість приголосних літер: {consonants}\n")
+        file.write(f"Три найпопулярніші голосні літери: {' '.join(popular_vowels)}\n")
+        file.write(f"Найпопулярніша приголосна літера: {' '.join(popular_consonants)}\n")
+
+    return vowels, consonants, popular_vowels, popular_consonants
 
 
-```python
-
-
-def find_most_common_vowels(text: str, n: int) -> list:
-    '''
-    Знаходить n найпопулярніших голосних літер в тексті.
-    Повертає список з цими літерами, в порядку спадання популярності.
-    '''
-    vowels = ['a', 'e', 'i', 'o', 'u']  # список голосних літер
-    vowel_counts = {vowel: 0 for vowel in vowels}
-
-    for char in text:
-        if char.isalpha() and char.lower() in vowels:
-            vowel_counts[char.lower()] += 1
-
-    sorted_vowels = sorted(vowel_counts, key=vowel_counts.get, reverse=True)
-    return sorted_vowels[:n]
-
-
-def find_most_common_consonants(text: str) -> str:
-    '''
-    Знаходить найпопулярнішу приголосну літеру в тексті.
-    Повертає цю літеру.
-    '''
-    consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y',
-                  'z']  # список приголосних літер
-    consonant_counts = {consonant: 0 for consonant in consonants}
-
-    for char in text:
-        if char.isalpha() and char.lower() in consonants:
-            consonant_counts[char.lower()] += 1
-
-    most_common_consonant = max(consonant_counts, key=consonant_counts.get)
-    return most_common_consonant
-
-
-# Знайдемо найпопулярнішу приголосну літеру
-most_common_consonant = find_most_common_consonants(text)
-print("Найпопулярніша приголосна літера:", most_common_consonant)
-
-# Знайдемо три найпопулярніші голосні літери
-most_common_vowels = find_most_common_vowels(text, 3)
-print("Три найпопулярніші голосні літери:", most_common_vowels)
-def write_output(file_path: str, result: dict, most_common_vowels: list, most_common_consonant: str):
-    '''
-    Записує відповідь у файл.
-    '''
-    with open(file_path, 'w') as file:
-        file.write(f"Кількість голосних літер: {result['голосні']}\n")
-        file.write(f"Кількість приголосних літер: {result['приголосні']}\n")
-        file.write(f"Найпопулярніша приголосна літера: {most_common_consonant}\n")
-        file.write("Три найпопулярніші голосні літери: ")
-        file.write(", ".join(most_common_vowels))
-
-# Записуємо відповідь у файл
-output_file_path = 'output.txt'
-write_output(output_file_path, result, most_common_vowels, most_common_consonant)
+file_path = "Input_8.txt"
+result = process_text(file_path)
+print("Результати обробки:")
+print(f"Кількість голосних літер: {result[0]}")
+print(f"Кількість приголосних літер: {result[1]}")
+print(f"Три найпопулярніші голосні літери: {' '.join(result[2])}")
+print(f"Найпопулярніша приголосна літера: {result[3]}")
+print("Результати записані в файл output.txt")
