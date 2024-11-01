@@ -175,3 +175,4 @@ class Pet:
                 self.get.human()
                 print(f"I dont have a human, going to get a human {self.human.human} with salary {self.human.human}")
             self.day_indexes(day)
+
